@@ -13,6 +13,12 @@ gem 'haml', '~> 4.0', '>= 4.0.7'
 gem 'bower-rails', '~> 0.11.0'
 gem 'kaminari', '~> 0.17.0'
 gem 'draper', '~> 2.1'
+gem 'reform', '~> 2.2', '>= 2.2.1'
+gem 'reform-rails', '~> 0.1.5'
+gem 'carrierwave', '~> 0.11.2'
+gem 'enumerate_it', '~> 1.3', '>= 1.3.1'
+gem 'file_validators', '~> 2.1'
+gem 'simple_form', '~> 3.3', '>= 3.3.1'
 
 group :development, :test do
   gem 'byebug'

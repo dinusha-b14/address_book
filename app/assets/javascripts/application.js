@@ -13,4 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap/dist/js/bootstrap.min
+//= require dropzone/dist/min/dropzone.min
 //= require_tree .

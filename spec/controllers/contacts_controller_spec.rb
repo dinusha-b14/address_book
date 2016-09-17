@@ -8,6 +8,7 @@ describe ContactsController, type: :controller do
 
     it 'should render the page successfully' do
       expect(response).to be_success
+      expect(response).to render_template('index')
     end
   end
 end

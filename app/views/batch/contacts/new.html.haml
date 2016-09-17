@@ -1,0 +1,8 @@
+%h2.heading Import Contacts
+
+= simple_form_for(@batch, url: batch_contacts_path, html: { id: 'csv-drop-zone', class: 'form-horizontal dropzone', multipart: true }) do |f|
+  .dz-message
+    %p Drop files here or click to upload. (Max file size is 5MB)
+    %i.fa.fa-cloud-upload.fa-5x{ aria: { hidden: 'true' } }
+  .fallback
+    = f.input :file

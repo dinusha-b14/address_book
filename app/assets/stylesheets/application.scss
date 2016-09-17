@@ -11,6 +11,15 @@
  * file per style scope.
  *
  *= require bootstrap/dist/css/bootstrap.min.css
+ *= require dropzone/dist/min/dropzone.min.css
  *= require_tree .
  *= require_self
  */
+
+.center {
+  text-align: center;
+}
+
+.dz-message {
+  font-size: 1.15em;
+}
