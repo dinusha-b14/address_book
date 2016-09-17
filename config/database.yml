@@ -4,12 +4,12 @@ default: &default
   pool: 5
 development:
   <<: *default
-  database: pwc_address_book_development
+  database: address_book_development
 test:
   <<: *default
-  database: pwc_address_book_test
+  database: address_book_test
 production:
   <<: *default
-  database: pwc_address_book_production
-  username: pwc_address_book
-  password: <%= ENV['PWC_ADDRESS_BOOK_DATABASE_PASSWORD'] %>
+  database: address_book_production
+  username: address_book
+  password: <%= ENV['ADDRESS_BOOK_DATABASE_PASSWORD'] %>
