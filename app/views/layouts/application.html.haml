@@ -1,0 +1,33 @@
+!!!
+%html
+  %head
+    %title PwcAddressBook
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
+    %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge"}
+    %meta{name: "msapplication-config",  content: "none"}
+
+    %link{ href: "http://fonts.googleapis.com/css?family=Roboto+Condensed:300,700%7COpen+Sans:300,400,700", rel: "stylesheet", type: "text/css" }
+    = stylesheet_link_tag    'application', media: 'all'
+    = javascript_include_tag 'application'
+    = csrf_meta_tags
+  %body
+    %header.header
+      .sticky-wrapper
+        .navbar.navbar-default{ role: 'navigation' }
+          .container
+            .navbar-header
+              %button.navbar-toggle{ type: 'button', data: { toggle: 'collapse', target: '.navbar-collapse' } }
+                %span.icon-bar
+                %span.icon-bar
+                %span.icon-bar
+              %h4 Address Book
+    %section
+      .container.clearfix
+        .row.margin-bottom
+          .col-md-12
+            = yield
+    %footer
+      .container
+        .row.copyright
+          .col-md-12
+            %p.roboto &copy; 2016 Dinusha Bodhinayake

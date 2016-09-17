@@ -1,0 +1,15 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+development:
+  <<: *default
+  database: pwc_address_book_development
+test:
+  <<: *default
+  database: pwc_address_book_test
+production:
+  <<: *default
+  database: pwc_address_book_production
+  username: pwc_address_book
+  password: <%= ENV['PWC_ADDRESS_BOOK_DATABASE_PASSWORD'] %>

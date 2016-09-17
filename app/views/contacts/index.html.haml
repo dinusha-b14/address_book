@@ -1,0 +1,14 @@
+%h2.heading Contacts
+
+%table.table.table-hover.table-responsive
+  %thead
+    %tr
+      %th Full Name
+      %th Email
+  %tbody
+    - contacts.each do |contact|
+      %tr
+        %td= contact.full_name
+        %td= contact.email
+
+= paginate(contacts)
