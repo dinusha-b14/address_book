@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ContactsImporter, type: :service do
+describe CsvContactsImporter, type: :service do
   subject { described_class.new(file_path) }
 
   describe '#perform' do

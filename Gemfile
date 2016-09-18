@@ -19,6 +19,7 @@ gem 'carrierwave', '~> 0.11.2'
 gem 'enumerate_it', '~> 1.3', '>= 1.3.1'
 gem 'file_validators', '~> 2.1'
 gem 'simple_form', '~> 3.3', '>= 3.3.1'
+gem 'sidekiq', '~> 4.2', '>= 4.2.1'
 
 group :development, :test do
   gem 'byebug'
