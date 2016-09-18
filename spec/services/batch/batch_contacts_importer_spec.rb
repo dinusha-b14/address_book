@@ -9,7 +9,7 @@ describe Batch::BatchContactsImporter, type: :service do
 
     before do
       allow(csv_contacts_importer).to receive(:perform) { true }
-      allow(CsvContactsImporter).to receive(:new).with(batch.file) { csv_contacts_importer }
+      allow(CsvContactsImporter).to receive(:new).with(batch.file.path) { csv_contacts_importer }
     end
 
     it 'should update the batch record as necessary and call the importer' do

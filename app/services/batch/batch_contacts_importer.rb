@@ -8,7 +8,7 @@ class Batch::BatchContactsImporter
 
   def perform
     update_batch_status_to_processing
-    CsvContactsImporter.new(file).perform
+    CsvContactsImporter.new(file.path).perform
     update_batch_status_to_complete
   end
 
