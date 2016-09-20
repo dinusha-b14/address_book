@@ -1,0 +1,2 @@
+class BatchResult < ::OpenStruct
+end

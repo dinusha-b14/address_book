@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20160917111400) do
     t.string   "batch_type",                     null: false
     t.string   "status",     default: "created", null: false
     t.json     "results",    default: []
+    t.text     "failures",   default: [],                     array: true
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
   end

@@ -5,6 +5,7 @@ class CreateBatches < ActiveRecord::Migration
       t.string :batch_type, null: false
       t.string :status, null: false, default: 'created'
       t.json :results, default: []
+      t.text :failures, array: true, default: []
 
       t.timestamps null: false
     end

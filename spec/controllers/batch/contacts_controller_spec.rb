@@ -27,7 +27,16 @@ describe Batch::ContactsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:batch) { create(:batch) }
+    let(:batch) do
+      create(
+        :batch,
+        status: BatchStatus::COMPLETE,
+        results: [
+          {id: 3, first_name: 'Thomas', last_name: 'Miller', email: 'test89273489293@test.com.au', result: 'success'},
+          {id: 6, first_name: 'Maria', last_name: 'Stevens', email: 'test11263876123@test.com.au', result: 'duplicate_found'}
+        ]
+      )
+    end
 
     before { get :show, id: batch.id }
 

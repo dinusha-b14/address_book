@@ -3,6 +3,6 @@ class BatchStatus < EnumerateIt::Base
     created: ['created', 'Created'],
     processing: ['processing', 'Processing'],
     complete: ['complete', 'Complete'],
-    failed: ['failed', 'Failed']
+    failed: ['failed', 'Failure']
   )
 end
