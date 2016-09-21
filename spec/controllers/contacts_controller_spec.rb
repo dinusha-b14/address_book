@@ -12,6 +12,17 @@ describe ContactsController, type: :controller do
     end
   end
 
+  describe 'GET #edit' do
+    let!(:contact) { create(:contact) }
+
+    before { get :edit, id: contact.id }
+
+    it 'should render the page successully' do
+      expect(response).to be_success
+      expect(response).to render_template('edit')
+    end
+  end
+
   describe 'PUT #update' do
     let!(:contact) { create(:contact) }
 
