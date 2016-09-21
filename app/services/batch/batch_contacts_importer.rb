@@ -33,12 +33,12 @@ class Batch::BatchContactsImporter
   end
 
   def set_attributes_with_csv_contact_result(csv_contact)
-    self.status = BatchStatus::COMPLETE
     if csv_contact.result.in?([ContactImportStatus::ERROR, ContactImportStatus::DUPLICATE_FOUND])
       self.batch_failures << csv_contact.failure_hash
       self.status = BatchStatus::COMPLETE_WITH_ERRORS
     else
       self.success_ids << csv_contact.contact_id
+      self.status ||= BatchStatus::COMPLETE
     end
   end
 
