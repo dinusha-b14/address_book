@@ -1,5 +1,9 @@
 %h2.heading Import Contacts
 
+.row
+  .col-xs-12
+    = link_to 'Back to Contacts', contacts_path, class: 'btn'
+
 = simple_form_for(@batch_form, url: batch_contacts_path, html: { id: 'csv-drop-zone', class: 'form-horizontal dropzone', multipart: true }) do |f|
   .dz-message
     %p Drop file here or click to upload. (Max file size is 5MB)

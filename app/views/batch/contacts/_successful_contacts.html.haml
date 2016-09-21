@@ -6,10 +6,10 @@
       %th Last Name
       %th Email
   %tbody
-    - @successful_contacts.each do |contact|
+    - successful_contacts.each do |contact|
       %tr
         %td= contact.first_name
         %td= contact.last_name
         %td= contact.email
 
-= paginate(@successful_contacts, param_name: :success_page)
+= paginate(successful_contacts, param_name: :success_page)

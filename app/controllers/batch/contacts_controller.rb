@@ -1,5 +1,6 @@
 class Batch::ContactsController < ApplicationController
   decorates_assigned :batch, with: BatchDecorator
+  decorates_assigned :successful_contacts, with: ContactsDecorator
 
   def new
     @batch_form = BatchForm.new(Batch.new)

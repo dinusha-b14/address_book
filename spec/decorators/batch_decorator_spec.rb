@@ -38,7 +38,7 @@ describe BatchDecorator, type: :decorator do
       it 'should render the complete with errors partial' do
         expect(subject.iconified_status).to eq(
           "<i class='fa fa-exclamation-circle fa-5x pull-left text-warning'></i>\n"\
-          "<h2 class='margin-top-10px'>Processing completed however errors were found</h2>\n"
+          "<h2 class='margin-top-10px'>Completed with errors</h2>\n"
         )
       end
     end

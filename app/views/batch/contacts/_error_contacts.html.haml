@@ -18,6 +18,9 @@
         %td
           %i.fa.fa-times-circle.text-danger
           = error_contact_object.result.titleize
-        %td= error_contact_object.errors.join('<br />')
+        %td= error_contact_object.errors.join('<br />').html_safe
+        %td
+          - if error_contact_object.result == ContactImportStatus::DUPLICATE_FOUND
+            = render partial: 'contact_ajax_update_form', locals: { id: error_contact_object.id, csv_data: error_contact_object.csv_data }
 
 = paginate(@error_contacts, param_name: :errors_page)

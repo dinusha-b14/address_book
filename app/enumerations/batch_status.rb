@@ -3,7 +3,7 @@ class BatchStatus < EnumerateIt::Base
     created: ['created', 'Created'],
     processing: ['processing', 'Processing'],
     complete: ['complete', 'Complete'],
-    complete_with_errors: ['complete_with_errors', 'Processing completed however errors were found'],
+    complete_with_errors: ['complete_with_errors', 'Completed with errors'],
     failed: ['failed', 'Failure']
   )
 end

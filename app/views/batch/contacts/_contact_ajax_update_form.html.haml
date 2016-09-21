@@ -1,0 +1,5 @@
+= form_tag(contact_path(id), method: :put, class: 'ajax_contact_update') do
+  = hidden_field_tag 'contact[first_name]', csv_data['first_name']
+  = hidden_field_tag 'contact[last_name]', csv_data['last_name']
+  = hidden_field_tag 'contact[email]', csv_data['email']
+  = submit_tag 'Update Existing', class: 'btn btn-primary', disable_with: 'Updating...'
