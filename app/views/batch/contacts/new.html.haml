@@ -11,3 +11,23 @@
   .fallback
     = f.input :file
     = f.submit 'Upload', class: 'btn btn-primary'
+%br/
+.row
+  .col-xs-12
+    %h4.heading Sample CSV File
+    %p The table below shows the format the CSV file should be in
+    %table.table.table-striped.table-bordered.table-responsive
+      %thead
+        %tr
+          %th First Name
+          %th Last Name
+          %th Email
+      %tbody
+        %tr
+          %td John
+          %td Thompson
+          %td john.thompson@sample.com.au
+        %tr
+          %td Michelle
+          %td Rivers
+          %td michelle.rivers@sample.com.au
