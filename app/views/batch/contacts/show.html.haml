@@ -7,26 +7,17 @@
 .well.well-lg
   = batch.iconified_status
 
-- if batch.status_complete?
-  %table.table.table-hover.table-responsive
-    %thead
-      %tr
-        %th First Name
-        %th Last Name
-        %th Email
-        %th Result
-    %tbody
-      - @results.each do |result|
-        - batch_result = BatchResult.new(result)
-        %tr
-          %td= batch_result.first_name
-          %td= batch_result.last_name
-          %td= batch_result.email
-          %td= batch_result.result.titleize
-
-  = paginate(@results)
-- elsif batch.status_failed?
-  %p Your CSV File could not be uploaded due to the following errors
+- if batch.status_failed?
+  %h4.text-danger Your CSV File could not be uploaded due to the following errors
   %ul
-    - batch.failures.each do |failure|
+    - batch.general_failures.each do |failure|
       %li= failure
+- else
+  .row
+    .col-xs-12
+    - if @error_contacts.present?
+      = render partial: 'error_contacts'
+  .row
+    .col-xs-12
+    - if @successful_contacts.present?
+      = render partial: 'successful_contacts'

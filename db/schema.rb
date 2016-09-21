@@ -17,13 +17,14 @@ ActiveRecord::Schema.define(version: 20160917111400) do
   enable_extension "plpgsql"
 
   create_table "batches", force: :cascade do |t|
-    t.string   "file",                           null: false
-    t.string   "batch_type",                     null: false
-    t.string   "status",     default: "created", null: false
-    t.json     "results",    default: []
-    t.text     "failures",   default: [],                     array: true
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.string   "file",                                 null: false
+    t.string   "batch_type",                           null: false
+    t.string   "status",           default: "created", null: false
+    t.integer  "success_ids",      default: [],                     array: true
+    t.text     "general_failures", default: [],                     array: true
+    t.json     "batch_failures",   default: []
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -35,5 +36,6 @@ ActiveRecord::Schema.define(version: 20160917111400) do
   end
 
   add_index "contacts", ["email"], name: "index_contacts_on_email", using: :btree
+  add_index "contacts", ["last_name"], name: "index_contacts_on_last_name", using: :btree
 
 end

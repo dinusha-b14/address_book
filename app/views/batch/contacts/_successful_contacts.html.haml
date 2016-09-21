@@ -1,0 +1,15 @@
+%h4 The following contacts were imported successfully
+%table.table.table-hover.table-responsive
+  %thead
+    %tr
+      %th First Name
+      %th Last Name
+      %th Email
+  %tbody
+    - @successful_contacts.each do |contact|
+      %tr
+        %td= contact.first_name
+        %td= contact.last_name
+        %td= contact.email
+
+= paginate(@successful_contacts, param_name: :success_page)

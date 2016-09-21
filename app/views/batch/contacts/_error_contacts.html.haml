@@ -1,0 +1,23 @@
+%h4.text-danger The following contacts could not be imported.
+%table.table.table-hover.table-responsive
+  %thead
+    %tr
+      %th First Name
+      %th Last Name
+      %th Email
+      %th Result
+      %th Errors
+      %th Actions
+  %tbody
+    - @error_contacts.each do |error_contact|
+      - error_contact_object = OpenStruct.new(error_contact)
+      %tr
+        %td= error_contact_object.csv_data['first_name']
+        %td= error_contact_object.csv_data['last_name']
+        %td= error_contact_object.csv_data['email']
+        %td
+          %i.fa.fa-times-circle.text-danger
+          = error_contact_object.result.titleize
+        %td= error_contact_object.errors.join('<br />')
+
+= paginate(@error_contacts, param_name: :errors_page)

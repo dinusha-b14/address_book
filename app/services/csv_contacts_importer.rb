@@ -15,7 +15,7 @@ class CsvContactsImporter
     raise CsvHeadersIncorrectError, 'CSV Headers Incorrect' unless headers_valid?
     csv_contacts do |csv_contact|
       csv_contact.save
-      yield csv_contact.result_hash
+      yield csv_contact
     end
   end
 
@@ -45,27 +45,40 @@ class CsvContactsImporter
 
   class CsvContact < ::OpenStruct
     attr_accessor :result
+    delegate :model, to: :contact_form, allow_nil: true, prefix: true
+    delegate :id, to: :contact, allow_nil: true, prefix: true
 
     def contact
+      # used the .unscoped scope here to ensure that all contacts are searched
       @contact ||= Contact.unscoped.find_or_initialize_by(email: sanitized_email)
     end
 
+    def contact_form
+      @contact_form ||= ContactForm.new(contact)
+    end
+
     def save
-      contact.assign_attributes(to_h.except(:email))
-      if contact.new_record?
-        contact.save
-        self.result = 'success'
+      if contact_form.validate(import_hash)
+        if contact_form_model.new_record?
+          contact_form.save
+          self.result = ::ContactImportStatus::SUCCESS
+        else
+          self.result = ::ContactImportStatus::DUPLICATE_FOUND
+        end
       else
-        self.result = 'duplicate_found'
+        self.result = ::ContactImportStatus::ERROR
       end
     end
 
-    def result_hash
+    def errors
+      @errors ||= contact_form.errors.full_messages
+    end
+
+    def failure_hash
       {
-        id: contact.id,
-        first_name: first_name,
-        last_name: last_name,
-        email: sanitized_email,
+        id: contact_id,
+        csv_data: to_h,
+        errors: errors,
         result: result
       }
     end
@@ -74,6 +87,10 @@ class CsvContactsImporter
 
     def sanitized_email
       @sanitized_email ||= email.to_s.strip
+    end
+
+    def import_hash
+      to_h.except(:email)
     end
   end
 end

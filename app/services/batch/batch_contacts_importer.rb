@@ -1,48 +1,53 @@
 class Batch::BatchContactsImporter
-  attr_accessor :batch
+  attr_accessor :batch, :success_ids, :general_failures, :batch_failures, :status
   delegate :file, to: :batch
-  delegate :results, to: :batch
-  delegate :failures, to: :batch
 
   def initialize(batch)
     @batch = batch
+    @success_ids = []
+    @general_failures = []
+    @batch_failures = []
   end
 
   def perform
-    set_batch_status_to_processing
+    update_batch_status_to_processing
     begin
-      CsvContactsImporter.new(file.path).perform do |result|
-        update_batch_with_csv_result(result)
+      CsvContactsImporter.new(file.path).perform do |csv_contact|
+        set_attributes_with_csv_contact_result(csv_contact)
       end
     rescue CsvContactsImporter::CsvFileNotePopulatedError, CsvContactsImporter::CsvHeadersIncorrectError, StandardError => e
       set_batch_status_to_error(e)
-    else
-      set_batch_status_to_complete
     end
+    update_batch
   end
 
   private
 
-  def set_batch_status_to_processing
-    batch.status = BatchStatus::PROCESSING
-    batch.save
-  end
-
-  def set_batch_status_to_complete
-    batch.status = BatchStatus::COMPLETE
-    batch.save
+  def update_batch_status_to_processing
+    batch.update(status: BatchStatus::PROCESSING)
   end
 
   def set_batch_status_to_error(error)
-    existing_failures = failures
-    batch.status = BatchStatus::FAILED
-    batch.failures = existing_failures << error.message
-    batch.save
+    self.status = BatchStatus::FAILED
+    self.general_failures << error.message
   end
 
-  def update_batch_with_csv_result(result)
-    existing_results = results
-    batch.results = existing_results << result
-    batch.save
+  def set_attributes_with_csv_contact_result(csv_contact)
+    self.status = BatchStatus::COMPLETE
+    if csv_contact.result.in?([ContactImportStatus::ERROR, ContactImportStatus::DUPLICATE_FOUND])
+      self.batch_failures << csv_contact.failure_hash
+      self.status = BatchStatus::COMPLETE_WITH_ERRORS
+    else
+      self.success_ids << csv_contact.contact_id
+    end
+  end
+
+  def update_batch
+    batch.update_attributes(
+      status: status,
+      batch_failures: batch_failures,
+      success_ids: success_ids,
+      general_failures: general_failures
+    )
   end
 end

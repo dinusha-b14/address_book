@@ -7,6 +7,8 @@ class BatchDecorator < Draper::Decorator
       processing_status
     when BatchStatus::COMPLETE
       complete_status
+    when BatchStatus::COMPLETE_WITH_ERRORS
+      complete_with_errors_status
     when BatchStatus::FAILED
       failed_status
     else
@@ -22,6 +24,10 @@ class BatchDecorator < Draper::Decorator
 
   def complete_status
     h.render partial: 'batch/shared/complete_status', locals: { status: translated_status }
+  end
+
+  def complete_with_errors_status
+    h.render partial: 'batch/shared/complete_with_errors_status', locals: { status: translated_status }
   end
 
   def failed_status

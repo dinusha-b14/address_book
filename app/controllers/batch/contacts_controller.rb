@@ -25,6 +25,7 @@ class Batch::ContactsController < ApplicationController
 
   def show
     @batch = Batch.find(params[:id])
-    @results = Kaminari.paginate_array(@batch.results).page(params[:page])
+    @error_contacts = Kaminari.paginate_array(@batch.batch_failures).page(params[:errors_page])
+    @successful_contacts = Contact.where(id: @batch.success_ids).page(params[:success_page])
   end
 end

@@ -45,16 +45,11 @@ describe CsvContactsImporter, type: :service do
         let(:csv_contact) { instance_double('CsvContactsImporter::CsvContact', save: true) }
 
         before do
-          allow(csv_contact).to receive(:result_hash) { { foo: :bar } }
           allow(CsvContactsImporter::CsvContact).to receive(:new) { csv_contact }
         end
 
         it 'should yield back with contact data and a result' do
-          expect { |b| subject.perform(&b) }.to yield_successive_args(
-            { foo: :bar },
-            { foo: :bar },
-            { foo: :bar }
-          )
+          expect { |b| subject.perform(&b) }.to yield_successive_args(csv_contact, csv_contact, csv_contact)
         end
       end
     end
@@ -102,7 +97,8 @@ describe CsvContactsImporter::CsvContact do
     context 'when record does not exist' do
       it 'should increase the number of contacts' do
         expect { subject.save }.to change(Contact, :count).by(1)
-        expect(subject.result).to eq('success')
+        expect(subject.result).to eq(ContactImportStatus::SUCCESS)
+        expect(subject.errors).to be_empty
       end
     end
 
@@ -113,28 +109,25 @@ describe CsvContactsImporter::CsvContact do
 
       it 'should not increase the number of contacts' do
         expect { subject.save }.to change(Contact, :count).by(0)
-        expect(subject.result).to eq('duplicate_found')
+        expect(subject.result).to eq(ContactImportStatus::DUPLICATE_FOUND)
+        expect(subject.errors).to be_empty
       end
     end
-  end
 
-  describe '#result_hash' do
-    let(:created_contact) { Contact.find_by(email: 'michael.thomas@test238749823.com.au') }
-
-    before do
-      subject.save
-    end
-
-    it 'should output a hash containing the correct keys' do
-      expect(subject.result_hash).to eq(
+    context 'when record has errors' do
+      let(:csv_row) do
         {
-          id: created_contact.id,
           first_name: 'Michael',
-          last_name: 'Thomas',
-          email: 'michael.thomas@test238749823.com.au',
-          result: 'success'
+          last_name: '',
+          email: 'michael.thomas@test238749823.com.au   '
         }
-      )
+      end
+
+      it 'should not increase the number of contacts' do
+        expect { subject.save }.to change(Contact, :count).by(0)
+        expect(subject.result).to eq(ContactImportStatus::ERROR)
+        expect(subject.errors).to eq(['Last name can\'t be blank'])
+      end
     end
   end
 end

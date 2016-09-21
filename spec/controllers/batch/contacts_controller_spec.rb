@@ -27,14 +27,29 @@ describe Batch::ContactsController, type: :controller do
   end
 
   describe 'GET #show' do
+    let!(:contact_one) { create(:contact) }
+    let!(:contact_two) { create(:contact) }
+
+    let(:batch_failure) do
+      {
+        'id' => 3,
+        'csv_data' => {
+          'first_name' =>'Michael',
+          'last_name' => 'Thomas',
+          'email' => 'test983748923@test.com.au'
+        },
+        'result' => ContactImportStatus::DUPLICATE_FOUND,
+        'errors' => []
+      }
+    end
+
     let(:batch) do
       create(
         :batch,
         status: BatchStatus::COMPLETE,
-        results: [
-          {id: 3, first_name: 'Thomas', last_name: 'Miller', email: 'test89273489293@test.com.au', result: 'success'},
-          {id: 6, first_name: 'Maria', last_name: 'Stevens', email: 'test11263876123@test.com.au', result: 'duplicate_found'}
-        ]
+        success_ids: [contact_one.id, contact_two.id],
+        general_failures: [],
+        batch_failures: [batch_failure],
       )
     end
 
