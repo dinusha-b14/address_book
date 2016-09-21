@@ -1,7 +1,0 @@
-{
-  "name": "dsl-generated-dependencies",
-  "dependencies": {
-    "bootstrap": "latest",
-    "dropzone": "4.3.0"
-  }
-}

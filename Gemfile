@@ -10,7 +10,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'puma', '~> 3.6'
 gem 'haml', '~> 4.0', '>= 4.0.7'
-gem 'bower-rails', '~> 0.11.0'
+gem 'bower', '~> 0.0.5'
 gem 'kaminari', '~> 0.17.0'
 gem 'draper', '~> 2.1'
 gem 'reform', '~> 2.2', '>= 2.2.1'
