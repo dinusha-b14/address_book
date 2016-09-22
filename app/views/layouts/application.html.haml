@@ -23,8 +23,8 @@
               %h4 Address Book
             #navigation.collapse.navbar-collapse
               %ul.nav.navbar-nav.navbar-right
-                %li= link_to 'Contacts', contacts_path
-                %li= link_to 'Import Contacts', new_batch_contact_path
+                %li{ class: active_state_for_controller('contacts') }= link_to 'Contacts', contacts_path
+                %li{ class: active_state_for_controller('batch/contacts') }= link_to 'Import Contacts', new_batch_contact_path
     %section
       .container.clearfix
         .row.margin-bottom
