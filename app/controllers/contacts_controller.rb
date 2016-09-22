@@ -16,7 +16,7 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact_form.validate(params[:contact])
-        @contact_form.save
+        ContactUpdater.new(@contact_form).perform
         format.html { redirect_to contacts_path }
         format.json { render json: @contact_form.model, status: :ok }
       else

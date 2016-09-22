@@ -6,7 +6,6 @@ class Batch::BatchContactsImporter
     @batch = batch
     @success_ids = []
     @general_failures = []
-    @batch_failures = []
   end
 
   def perform
@@ -34,7 +33,7 @@ class Batch::BatchContactsImporter
 
   def set_attributes_with_csv_contact_result(csv_contact)
     if csv_contact.result.in?([ContactImportStatus::ERROR, ContactImportStatus::DUPLICATE_FOUND])
-      self.batch_failures << csv_contact.failure_hash
+      batch.batch_failures.create(csv_contact.failure_hash)
       self.status = BatchStatus::COMPLETE_WITH_ERRORS
     else
       self.success_ids << csv_contact.contact_id
@@ -45,7 +44,6 @@ class Batch::BatchContactsImporter
   def update_batch
     batch.update_attributes(
       status: status,
-      batch_failures: batch_failures,
       success_ids: success_ids,
       general_failures: general_failures
     )

@@ -1,5 +1,6 @@
 class Batch::ContactsController < ApplicationController
   decorates_assigned :batch, with: BatchDecorator
+  decorates_assigned :batch_failures, with: BatchFailuresDecorator
   decorates_assigned :successful_contacts, with: ContactsDecorator
 
   def new
@@ -26,7 +27,7 @@ class Batch::ContactsController < ApplicationController
 
   def show
     @batch = Batch.find(params[:id])
-    @error_contacts = Kaminari.paginate_array(@batch.batch_failures).page(params[:errors_page])
+    @batch_failures = @batch.batch_failures.page(params[:errors_page])
     @successful_contacts = Contact.where(id: @batch.success_ids).page(params[:success_page])
   end
 end

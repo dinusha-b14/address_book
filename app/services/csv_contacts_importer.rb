@@ -76,9 +76,9 @@ class CsvContactsImporter
 
     def failure_hash
       {
-        id: contact_id,
+        klass_id: contact_id,
         csv_data: to_h,
-        errors: errors,
+        klass_errors: errors,
         result: result
       }
     end

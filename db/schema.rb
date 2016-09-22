@@ -11,10 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160917111400) do
+ActiveRecord::Schema.define(version: 20160922151214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "batch_failures", force: :cascade do |t|
+    t.integer  "batch_id",                  null: false
+    t.integer  "klass_id"
+    t.json     "csv_data",     default: {}
+    t.text     "klass_errors", default: [],              array: true
+    t.string   "result"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "batch_failures", ["batch_id"], name: "index_batch_failures_on_batch_id", using: :btree
 
   create_table "batches", force: :cascade do |t|
     t.string   "file",                                 null: false
@@ -22,7 +34,6 @@ ActiveRecord::Schema.define(version: 20160917111400) do
     t.string   "status",           default: "created", null: false
     t.integer  "success_ids",      default: [],                     array: true
     t.text     "general_failures", default: [],                     array: true
-    t.json     "batch_failures",   default: []
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
   end
@@ -38,4 +49,5 @@ ActiveRecord::Schema.define(version: 20160917111400) do
   add_index "contacts", ["email"], name: "index_contacts_on_email", using: :btree
   add_index "contacts", ["last_name"], name: "index_contacts_on_last_name", using: :btree
 
+  add_foreign_key "batch_failures", "batches"
 end

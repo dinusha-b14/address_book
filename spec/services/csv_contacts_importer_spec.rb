@@ -130,4 +130,10 @@ describe CsvContactsImporter::CsvContact do
       end
     end
   end
+
+  describe '#failure_hash' do
+    it 'should contain the correct keys' do
+      expect(subject.failure_hash.keys).to match_array([:klass_id, :csv_data, :klass_errors, :result])
+    end
+  end
 end

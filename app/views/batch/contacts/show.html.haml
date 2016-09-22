@@ -15,7 +15,7 @@
 - else
   .row
     .col-xs-12
-      - if @error_contacts.present?
+      - if batch_failures.present?
         = render partial: 'error_contacts'
   .row
     .col-xs-12

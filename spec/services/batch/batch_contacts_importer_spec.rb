@@ -17,9 +17,9 @@ describe Batch::BatchContactsImporter, type: :service do
         result: ::ContactImportStatus::SUCCESS,
         contact_id: 3,
         failure_hash: {
-          id: 3,
+          klass_id: 3,
           csv_data: { first_name: 'Michael', last_name: 'Thomas', email: 'test78263476234@test.com.au' },
-          errors: [],
+          klass_errors: [],
           result: ::ContactImportStatus::SUCCESS
         }
       )
@@ -31,9 +31,9 @@ describe Batch::BatchContactsImporter, type: :service do
         result: ::ContactImportStatus::DUPLICATE_FOUND,
         contact_id: 5,
         failure_hash: {
-          id: 5,
+          klass_id: 5,
           csv_data: { first_name: 'Mark', last_name: 'Thompson', email: 'test273678123@test.com.au' },
-          errors: [],
+          klass_errors: [],
           result: ::ContactImportStatus::DUPLICATE_FOUND
         }
       )
@@ -45,9 +45,9 @@ describe Batch::BatchContactsImporter, type: :service do
         result: ::ContactImportStatus::ERROR,
         contact_id: nil,
         failure_hash: {
-          id: nil,
+          klass_id: nil,
           csv_data: { first_name: '', last_name: 'Thompson', email: 'test273678123@test.com.au' },
-          errors: ['First name can\'t be blank'],
+          klass_errors: ['First name can\'t be blank'],
           result: ::ContactImportStatus::ERROR
         }
       )
@@ -62,22 +62,7 @@ describe Batch::BatchContactsImporter, type: :service do
 
       it 'should update the batch record as necessary and call the importer' do
         expect(batch.status).to eq(BatchStatus::COMPLETE_WITH_ERRORS)
-        expect(batch.batch_failures).to match_array(
-          [
-            {
-              'id' => 5,
-              'csv_data' => { 'first_name' => 'Mark', 'last_name' => 'Thompson', 'email' => 'test273678123@test.com.au' },
-              'errors' => [],
-              'result' => ::ContactImportStatus::DUPLICATE_FOUND
-            },
-            {
-              'id' => nil,
-              'csv_data' => { 'first_name' => '', 'last_name' => 'Thompson', 'email' => 'test273678123@test.com.au' },
-              'errors' => ['First name can\'t be blank'],
-              'result' => ::ContactImportStatus::ERROR
-            }
-          ]
-        )
+        expect(batch.batch_failures.count).to eq(2)
         expect(batch.success_ids).to match_array([3])
       end
     end
@@ -92,7 +77,6 @@ describe Batch::BatchContactsImporter, type: :service do
       it 'should update the batch record as necessary and call the importer' do
         expect(batch.status).to eq(BatchStatus::FAILED)
         expect(batch.general_failures).to eq(['CSV File Empty'])
-        expect(batch.batch_failures).to eq([])
         expect(batch.success_ids).to eq([])
       end
     end
@@ -107,7 +91,6 @@ describe Batch::BatchContactsImporter, type: :service do
       it 'should update the batch record as necessary and call the importer' do
         expect(batch.status).to eq(BatchStatus::FAILED)
         expect(batch.general_failures).to eq(['CSV Headers Incorrect'])
-        expect(batch.batch_failures).to eq([])
         expect(batch.success_ids).to eq([])
       end
     end

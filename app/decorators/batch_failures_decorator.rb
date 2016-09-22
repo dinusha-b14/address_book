@@ -1,0 +1,2 @@
+class BatchFailuresDecorator < PaginatingDecorator
+end
