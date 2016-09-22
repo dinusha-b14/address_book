@@ -3,6 +3,10 @@ require 'rails_helper'
 describe Batch::BatchContactsImporter, type: :service do
   subject { described_class.new(batch) }
 
+  before do
+    allow(subject).to receive(:download_path) { batch.file.path }
+  end
+
   describe '#perform' do
     let(:batch) { create(:batch) }
     let(:csv_contacts_importer) { instance_double('CsvContactsImporter') }

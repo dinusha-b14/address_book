@@ -12,7 +12,7 @@ class Batch::BatchContactsImporter
   def perform
     update_batch_status_to_processing
     begin
-      CsvContactsImporter.new(file.path).perform do |csv_contact|
+      CsvContactsImporter.new(download_path).perform do |csv_contact|
         set_attributes_with_csv_contact_result(csv_contact)
       end
     rescue CsvContactsImporter::CsvFileNotePopulatedError, CsvContactsImporter::CsvHeadersIncorrectError, StandardError => e
@@ -49,5 +49,13 @@ class Batch::BatchContactsImporter
       success_ids: success_ids,
       general_failures: general_failures
     )
+  end
+
+  def download_path
+    S3Downloader.new(file, download_destination).download
+  end
+
+  def download_destination
+    File.join(Rails.root, 'tmp', "#{file.file.filename}_#{batch.id}.csv")
   end
 end
