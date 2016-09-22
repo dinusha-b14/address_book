@@ -16,7 +16,8 @@ describe BatchDecorator, type: :decorator do
       it 'should render the processing partial' do
         expect(subject.iconified_status).to eq(
           "<i class='fa fa-refresh fa-spin fa-5x fa-fw pull-left text-warning'></i>\n"\
-          "<h2 class='margin-top-10px'>Processing</h2>\n"
+          "<h2 class='margin-top-10px'>Processing</h2>\n"\
+          "<h4 class='center'>Please refresh your browser window to check the progress of this import.</h4>\n"
         )
       end
     end
