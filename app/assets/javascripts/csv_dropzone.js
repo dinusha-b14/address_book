@@ -1,7 +1,7 @@
 Dropzone.options.csvDropZone = {
   paramName: 'batch[file]',
   maxFilesize: 5,
-  acceptedFiles: 'text/csv,.csv',
+  acceptedFiles: 'application/csv,application/vnd.ms-excel,text/csv,text/plain,.csv',
   uploadMultiple: false,
   init: function() {
     this.on('addedfile', function(file) {
