@@ -17,10 +17,10 @@ class Batch::ContactsController < ApplicationController
     respond_to do |format|
       if @success
         format.html { redirect_to batch_contact_path(@batch) }
-        format.json { render json: { 'resource_url': batch_contact_path(@batch) } }
+        format.json { render json: { 'resource_url': batch_contact_path(@batch) }, status: :created }
       else
-        format.html { render :new }
-        format.json { render json: { 'resource_url': '#' } }
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @batch_form.errors, status: :unprocessable_entity }
       end
     end
   end

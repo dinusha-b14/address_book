@@ -12,16 +12,49 @@ describe Batch::ContactsController, type: :controller do
     end
   end
 
-  describe 'POST #create' do
-    before do
-      post :create, batch: { file: csv_file }
+  describe '#create' do
+    context 'HTTP' do
+      before do
+        post :create, batch: { file: csv_file }
+      end
+
+      context 'when uploaded file is valid' do
+        let(:csv_file) { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'fixtures', 'valid_test.csv')) }
+
+        it 'should redirect to the show page' do
+          expect(response).to have_http_status(:redirect)
+        end
+      end
+
+      context 'when uploaded file is invalid' do
+        let(:csv_file) { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'fixtures', 'resume.pdf'), content_type: 'application/pdf') }
+
+        it 'should redirect to the show page' do
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
     end
 
-    context 'when uploaded file is valid' do
-      let(:csv_file) { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'fixtures', 'valid_test.csv')) }
+    context 'JSON' do
+      before do
+        post :create, batch: { file: csv_file }, format: :json
+      end
 
-      it 'should redirect to the show page' do
-        expect(response).to have_http_status(:redirect)
+      context 'when uploaded file is valid' do
+        let(:csv_file) { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'fixtures', 'valid_test.csv')) }
+
+        it 'should redirect to the show page' do
+          expect(response).to have_http_status(:created)
+        end
+      end
+
+      context 'when uploaded file is invalid' do
+        let(:csv_file) { Rack::Test::UploadedFile.new(File.join(Rails.root, 'spec', 'fixtures', 'resume.pdf'), content_type: 'application/pdf') }
+
+        it 'should redirect to the show page' do
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.body).to eq({ file: ['only application/csv, application/vnd.ms-excel, text/csv, text/plain are allowed']}.to_json)
+        end
       end
     end
   end
